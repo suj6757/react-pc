@@ -20,6 +20,7 @@ import { ko } from "date-fns/esm/locale";
 import 'react-datepicker/dist/react-datepicker.css';
 import ShowRoom from '../../../containers/pages/ShowRoom';
 import Bubble from '../../../components/charts/Bubble';
+import ScatterDatetime from '../../../components/charts/ScatterDatetime';
 import Line from '../../../components/charts/Line';
 import Bar from '../../../components/charts/Bar';
 import { ReactTableWithPaginationCard } from '../../../containers/ui/ReactTableCards';
@@ -417,7 +418,7 @@ const Start = ({ intl }) => {
               <div className="clearfix box-line">
                 <div className="box left">
                   {/* 각 차트별 height 값은 props로 전달 차트 */}
-                  <Bubble height={550} />
+                  <ScatterDatetime height={550} />
                 </div>
                 <div className="box right">
                   <div className="chart-area">
@@ -463,7 +464,7 @@ const Start = ({ intl }) => {
                       <ReactTableWithPaginationCard />
                     </div>
                     <div className="box right">
-                      <Bubble height={400} />
+                      <Bubble height={500} />
                     </div>
                   </div>
                 </div>
