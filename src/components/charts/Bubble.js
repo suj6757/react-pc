@@ -12,23 +12,7 @@ const Bubble = ({height}) => {
         Category3 : "티셔츠",
         Keyword : "켈린클라인"
     });
-
-    React.useEffect(() => {
-        console.log(resData);
-        
-        axios({
-            method: "get",
-            url: '/api/GetIndustry_PFactor_TrendQuad',
-            responseType: "type",
-            params : resData
-        }).then((response) => {
-            console.log('==============res : ', response);
-            //setResult(JSON.stringify(data));
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }, []);
-
+    
     return (
         <ReactApexChart options={bubbleChartOptions.options} series={bubbleChartOptions.series} type="bubble" height={height} />
     );
