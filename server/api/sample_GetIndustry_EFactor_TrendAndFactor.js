@@ -28,15 +28,16 @@ router.use('/', (req, res) => {
 
     // 방식 2
     /* var data2 = {
-        FromDate : "2021-05-01", 
-        ToDate : "2021-05-30", 
-        Category1 : "패션의류",
-        Category2 : "여성의류",
-        Category3 : "티셔츠",
-        Keyword : "",
-        Category_upper : "스타일",
-        Name : "베이직"
+       FromDate : "2021-05-25", 
+      ToDate : "2021-06-01", 
+      Category1 : "패션의류",
+      Category2 : "남성의류",
+      Category3 : "셔츠/남방",
+      Keyword : "지오다노",
+      Category_upper : "품질",
+      Name : "배송"
     } */
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);
@@ -60,7 +61,7 @@ router.use('/', (req, res) => {
       data2.Name = req.body.Name;
 
     }
-
+    console.log(data2);
     client_Test.GetIndustry_EFactor_TrendAndFactor(data2, function(err, data) {
         try {
             console.log('error : ', err);

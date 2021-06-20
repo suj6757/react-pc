@@ -9,7 +9,7 @@ router.use(bodyParser.json()); // support encoded bodies
 router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 router.use('/', (req, res) => {
-    console.log('/api/GetIndustry_Showroom');
+    
 
     var grpcjs = require('@grpc/grpc-js');
     var protoLoader = require('@grpc/proto-loader');
@@ -35,7 +35,7 @@ router.use('/', (req, res) => {
         Category3 : "티셔츠",
         Keyword : "켈린클라인",
     } */
-    
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);
@@ -54,9 +54,11 @@ router.use('/', (req, res) => {
       data2.Category3 = req.body.Category3;
       data2.Keyword = req.body.Keyword;
     }
-
+    
+    console.log('/api/GetIndustry_Showroom');
+    console.log(data2);
     client_Test.GetIndustry_Showroom(data2, function(err, data) {
-        try {
+        try { 
             console.log('error : ', err);
             console.log(data);
 

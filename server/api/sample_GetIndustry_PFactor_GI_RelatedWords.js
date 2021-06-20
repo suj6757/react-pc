@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 /* bodyParser - POST 파라이터 추출에 필요*/ 
 var bodyParser = require('body-parser');
 /*전통방식의 GET파라미터 분석에 필요*/
@@ -9,7 +8,7 @@ router.use(bodyParser.json()); // support encoded bodies
 router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 router.use('/', (req, res) => {
-    console.log('http://localhost:5000/api/TotalCategory_List');
+    console.log('/api/GetIndustry_PFactor_GI_RelatedWords');
 
     var grpcjs = require('@grpc/grpc-js');
     var protoLoader = require('@grpc/proto-loader');
@@ -25,16 +24,42 @@ router.use('/', (req, res) => {
     });
     var protoDescriptor_Test = grpcjs.loadPackageDefinition(packageDefinition_Test);
     var client_Test = new protoDescriptor_Test.TrendService.TrendInfo('203.245.41.17:50052', grpcjs.credentials.createInsecure());
+    /*
+    var data2 = {
+      FromDate : "2021-05-10", 
+      ToDate : "2021-06-01", 
+      Category1 : "패션의류",
+      Category2 : "남성의류",
+      Category3 : "셔츠/남방",
+      Keyword : "지오다노",
+      Factor : "디테일"
+    } */
     var methodType = req.method;
-    // 방식 1
-    var data1 = protoDescriptor_Test.TrendService.Request_Empty
-
-    client_Test.GetIndustry_TotalCategory_List({}, function(err, data) {
+    var data2 = {};
+    if( methodType == 'GET' ){
+      var parseObj = url.parse(req.url, true);
+      data2.FromDate = parseObj.query.FromDate;
+      data2.ToDate = parseObj.query.ToDate;
+      data2.Category1 = parseObj.query.Category1;
+      data2.Category2 = parseObj.query.Category2;
+      data2.Category3 = parseObj.query.Category3;
+      data2.Keyword = parseObj.query.Keyword;
+      data2.Factor = parseObj.query.Factor;
+    }
+    else{
+      data2.FromDate = req.body.FromDate;
+      data2.ToDate = req.body.ToDate;
+      data2.Category1 = req.body.Category1;
+      data2.Category2 = req.body.Category2;
+      data2.Category3 = req.body.Category3;
+      data2.Keyword = req.body.Keyword;
+      data2.Factor = req.body.Factor;
+    }
+    console.log(data2);
+    client_Test.GetIndustry_PFactor_GI_RelatedWords(req.body, function(err, data) {
         try {
             console.log('error : ', err);
             console.log(data);
-            //console.log(data.Datas);
-            //console.log(data.Datas[0].Category1);
 
             res.send(data);
         }

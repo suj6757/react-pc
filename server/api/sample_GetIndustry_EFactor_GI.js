@@ -34,6 +34,7 @@ router.use('/', (req, res) => {
         Keyword : "켈린클라인",
         Clicked : "Clicked"
     } */
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);

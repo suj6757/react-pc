@@ -1,43 +1,86 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React , { useState , useEffect ,forwardRef, useImperativeHandle } from 'react'; // eslint-disable-line no-unused-vars
+import PropTypes from 'prop-types'; // eslint-disable-line no-unused-vars
 
-const thumbs = [
-  '/assets/img/showroom/thumb1.png',
-  '/assets/img/showroom/thumb2.png',
-  '/assets/img/showroom/thumb3.png',
-  '/assets/img/showroom/thumb4.png',
-  '/assets/img/showroom/thumb1.png',
-  '/assets/img/showroom/thumb3.png',
-  '/assets/img/showroom/thumb2.png',
-  '/assets/img/showroom/thumb1.png',
-  '/assets/img/showroom/thumb4.png',
-  '/assets/img/showroom/thumb3.png',
-  '/assets/img/showroom/thumb1.png',
-  '/assets/img/showroom/thumb2.png',
-  '/assets/img/showroom/thumb4.png',
-  '/assets/img/showroom/thumb1.png',
-
-];
-
-const ShowRoom = () => {
-
-  return (
-    <>
-      <ul>
-        {thumbs.map((item, index) => {
-          return (
-            <li key={index}>
-              <img
-                className="img-fluid border-radius"
-                src={item}
-                alt="thumbnail"
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </>
-  );
+const thumbs = {URL : [
+  {
+    ImageURL:'/assets/img/showroom/thumb1.png',
+    SiteURL: '#'
+  },
+  {
+    ImageURL:'/assets/img/showroom/thumb2.png' ,
+    SiteURL: '#'
+  },
+  {
+    ImageURL:'/assets/img/showroom/thumb3.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb4.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb1.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb3.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb2.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb1.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb4.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb3.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb1.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb2.png',
+    SiteURL: '#'},
+  {
+    ImageURL:'/assets/img/showroom/thumb4.png',
+    SiteURL: ''},
+  {
+    ImageURL:'/assets/img/showroom/thumb1.png',
+    SiteURL: '#'},
+  ]
 };
+
+const ShowRoom = React.forwardRef((props,ref) => { // eslint-disable-line no-unused-vars
+    const [thumbList , setThumbList] = useState(thumbs); // eslint-disable-line no-unused-vars
+    useImperativeHandle(ref, () => ({
+      showRoonGetCallApi(objShowRoomData) {
+        console.log('자식을 콜했음');
+        console.log(objShowRoomData);
+        setThumbList(objShowRoomData);
+      }
+    }));
+
+    return (
+      <>
+        <ul>
+          {thumbList.URL.map((item, index) => {
+            return (
+              <li key={index}>
+                <a href={item.SiteURL}>
+                <img
+                  className="img-fluid border-radius"
+                  src={item.ImageURL}
+                  alt="thumbnail"
+                />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
+});    
+
+ShowRoom.displayName = 'ShowRoom';
 
 export default ShowRoom;

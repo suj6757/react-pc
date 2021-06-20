@@ -70,7 +70,7 @@ function Table({ columns, data, divided = false, defaultPageSize = 6 }) {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} onClick={() => console.log(row.original)}>
                 {row.cells.map((cell, cellIndex) => (
                   <td
                     key={`td_${cellIndex}`}

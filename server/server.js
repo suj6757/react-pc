@@ -11,6 +11,8 @@ router.use('/api/GetIndustry_PFactor_TrendAndFactor', require('./api/sample_GetI
 router.use('/api/GetIndustry_PFactor_TrendQuad', require('./api/sample_GetIndustry_PFactor_TrendQuad'));
 router.use('/api/GetIndustry_Showroom', require('./api/sample_GetIndustry_Showroom'));
 router.use('/api/GetIndustry_TotalCategory_List', require('./api/sample_GetIndustry_TotalCategory_List'));
+router.use('/api/GetIndustry_EFactor_GI_RelatedWords', require('./api/sample_GetIndustry_EFactor_GI_RelatedWords'));
+router.use('/api/GetIndustry_PFactor_GI_RelatedWords', require('./api/sample_GetIndustry_PFactor_GI_RelatedWords'));
 router.use('/api/Login', require('./api/sample_Login'));
 
 router.listen(port, function () {

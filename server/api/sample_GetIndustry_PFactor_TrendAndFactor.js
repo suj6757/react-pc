@@ -36,7 +36,7 @@ router.use('/', (req, res) => {
         Category_upper : "스타일",
         Name : "베이직"
     } */
-    
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);
@@ -60,7 +60,7 @@ router.use('/', (req, res) => {
       data2.Name = req.body.Name;
     }
 
-    client_Test.GetIndustry_PFactor_TrendAndFactor(data, function(err, data) {
+    client_Test.GetIndustry_PFactor_TrendAndFactor(data2, function(err, data) {
         try {
             console.log('error : ', err);
             console.log(data);

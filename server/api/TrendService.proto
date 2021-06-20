@@ -44,6 +44,13 @@ message Table_ThreeInt {
     int64 DGI = 4;
 }
 
+message Table_ClickedBubble {
+    string RelatedWord = 1;
+    int64 TF = 2;
+    string SiteURL = 3;
+    string ImageURL = 4;
+}
+
 message Request_Type1 {
     string FromDate = 1;
     string ToDate = 2;
@@ -71,7 +78,7 @@ message Request_Type3 {
     string Category2 = 4;
     string Category3 = 5;
     string Keyword = 6;
-    string Clicked = 7;
+    string Factor = 7;
 }
 
 message Request_Empty {
@@ -117,17 +124,14 @@ message Response_GITableBubble {
 message Response_ClickedGIBubble {
     string ErrorCode = 1;
     string Message = 2;
-    repeated Table_OneInt BubbleData = 3;
-    repeated Table_TwoURL URL = 4;
+    repeated Table_ClickedBubble Data = 3;
 }
 
 message Table_AllBubbleData {
-    string Category = 1;
-    int64 PGI = 2;
-    int64 SGI = 3;
-    int64 DGI = 4;
-    repeated Table_OneInt AssociatedBubbleData = 5;
-    repeated Table_TwoURL URL = 6;
+    string Topics = 1;
+    double PGI = 2;
+    double SGI = 3;
+    double DGI = 4;
 }
 
 message Response_GI {
@@ -155,4 +159,8 @@ service TrendInfo {
 
     rpc GetIndustry_PFactor_GI(Request_Type1) returns (Response_GI);
     rpc GetIndustry_EFactor_GI(Request_Type1) returns (Response_GI);
+
+    rpc GetIndustry_PFactor_GI_RelatedWords(Request_Type3) returns (Response_ClickedGIBubble);
+    rpc GetIndustry_EFactor_GI_RelatedWords(Request_Type3) returns (Response_ClickedGIBubble);
+
 }

@@ -5,16 +5,7 @@ import { lineChartOptions } from './config';
 const Line = ({height}) => {
     //라인 옵션
     const [lineOption, setLineOption] = React.useState(lineChartOptions);
-    //서버에 보낼 파라미터
-    const [resParam, setResParam] = React.useState({
-        FromDate : "2021-05-01",
-        ToDate : "2021-05-10",
-        Category1 : "패션의류",
-        Category2 : "여성의류",
-        Category3 : "티셔츠",
-        Keyword : "켈린클라인"
-    });
-    //서버 호출 후 받는 데이터
+    //서버 호출 후 받는 임시 데이터(받을 파라미터)
     const [resData, setResData] = React.useState({
         TrendData: [
             { date: '2019-05-01', Value: 0.2 },

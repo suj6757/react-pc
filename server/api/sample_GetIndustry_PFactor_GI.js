@@ -36,7 +36,7 @@ router.use('/', (req, res) => {
         Category3 : "티셔츠",
         Keyword : "켈린클라인"
     }  */
-
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);

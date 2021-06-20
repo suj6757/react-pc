@@ -35,6 +35,7 @@ router.use('/', (req, res) => {
         Category3 : "보정속옷",
         Keyword : ""
     } */
+    var methodType = req.method;
     var data2 = {};
     if( methodType == 'GET' ){
       var parseObj = url.parse(req.url, true);
@@ -53,7 +54,7 @@ router.use('/', (req, res) => {
       data2.Category3 = req.body.Category3;
       data2.Keyword = req.body.Keyword;
     }
-
+    console.log(data2);
     client_Test.GetIndustry_EFactor_TrendQuad(data2, function(err, data) {
         try {
             console.log('error : ', err);

@@ -5,16 +5,7 @@ import { barChartOptions } from './config';
 const Bar = ({height}) => {
     //라인 옵션
     const [barOption, setBarOption] = React.useState(barChartOptions);
-    //서버에 보낼 임시 파라미터
-    const [resParam, setResParam] = React.useState({
-        FromDate : "2021-05-01",
-        ToDate : "2021-05-10",
-        Category1 : "패션의류",
-        Category2 : "여성의류",
-        Category3 : "티셔츠",
-        Keyword : "켈린클라인"
-    });
-    //서버 호출 후 받는 임시 데이터
+    //서버 호출 후 받는 임시 데이터(받을 파라미터)
     const [resData, setResData] = React.useState({
         SentimentFactorData: [
             { name: '촉감', Value: '219' },

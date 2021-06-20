@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect ,createRef } from 'react'; // eslint-disable-line no-unused-vars
 import { 
   Row, 
   Card, 
@@ -20,25 +20,23 @@ import { ko } from "date-fns/esm/locale";
 import 'react-datepicker/dist/react-datepicker.css';
 import ShowRoom from '../../../containers/pages/ShowRoom';
 import Bubble from '../../../components/charts/Bubble';
-import ScatterDatetime from '../../../components/charts/ScatterDatetime';
 import Line from '../../../components/charts/Line';
 import Bar from '../../../components/charts/Bar';
+import Scatter from '../../../components/charts/ScatterDatetime';
 import { ReactTableWithPaginationCard } from '../../../containers/ui/ReactTableCards';
 import { Colxx } from '../../../components/common/CustomBootstrap';
 import CustomSelectInput from '../../../components/common/CustomSelectInput';
-
+import showroomp from '../../../data/showroomp';  // eslint-disable-line no-unused-vars
+import efactorgip from '../../../data/efactorgip';  // eslint-disable-line no-unused-vars
+import efactorgirelatedwordsp from '../../../data/efactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
+import efactortrendandfactorp from '../../../data/efactortrendandfactorp';  // eslint-disable-line no-unused-vars
+import efactortrendquadp from '../../../data/efactortrendquadp';  // eslint-disable-line no-unused-vars
+import pfactorgip from '../../../data/pfactorgip';  // eslint-disable-line no-unused-vars
+import pfactorgirelatedwordsp from '../../../data/pfactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
+import pfactortrendandfactorp from '../../../data/pfactortrendandfactorp';  // eslint-disable-line no-unused-vars
+import pfactortrendquadp from '../../../data/pfactortrendquadp';  // eslint-disable-line no-unused-vars
 
 // import Breadcrumb from '../../../containers/navs/Breadcrumb';
-const callShowroomApi = async (paramValue,setShowroom) =>{ // eslint-disable-line no-unused-vars
-  await axios.post("/api/GetIndustry_Showroom",paramValue)
-    .then(function (response) {
-      setShowroom(JSON.stringify(response) );
-      /* 여기에서 데이타 갱신 함수 콜 */ // 여기가 로그인 확인
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-};
 
 const callPFactorTrendQuadApi = async (paramValue,setPFactorTrendQuad) =>{ // eslint-disable-line no-unused-vars
   await axios.post("/api/GetIndustry_PFactor_TrendQuad",paramValue)
@@ -105,8 +103,37 @@ const callEFactorGIApi = async (paramValue,setEFactorGI) =>{ // eslint-disable-l
       console.log(error);
     });
 };
-
+const showRoonGetData = React.createRef(); // eslint-disable-line no-unused-vars
+  const showRoomChange = (objShowroom) =>{ // eslint-disable-line no-unused-vars
+    
+    if (showRoonGetData.current)
+    {
+      showRoonGetData.current.showRoonGetCallApi(objShowroom);
+      
+    }
+  }
+  
+const callShowroomApi =  async (paramValue,setShowroom) =>{ // eslint-disable-line no-unused-vars
+   
+   await axios.post("/api/GetIndustry_Showroom",paramValue)
+    .then(function (response) {
+      console.log(response);
+      if (response.data.ErrorCode === 'OK') {
+        
+        showRoomChange(response.data);
+      }
+      /*
+      else{
+        showRoomChange(showroomdata);
+      } */
+      /* 여기에서 데이타 갱신 함수 콜 */ // 여기가 로그인 확인
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 const Start = ({ intl }) => {
+  let param1 = {};
   const [startDateRange, setStartDateRange] = useState(new Date());
   const [endDateRange, setEndDateRange] = useState(new Date());
   const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
@@ -115,6 +142,7 @@ const Start = ({ intl }) => {
   const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
   const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
   const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
+  const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
   let categoryList = [];
   let categoryList1 = []; // eslint-disable-line no-unused-vars
   let categoryList2 = []; // eslint-disable-line no-unused-vars
@@ -122,13 +150,13 @@ const Start = ({ intl }) => {
   const { messages } = intl;
   /*  함수 호출 전달용    */
 
-  const [selectShowroom, setShowroom] = useState('');// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState('');// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState('');// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState('');// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState('');// eslint-disable-line no-unused-vars
-  const [selectPFactorGI, setPFactorGI] = useState('');// eslint-disable-line no-unused-vars
-  const [selectEFactorGI, setEFactorGI] = useState('');// eslint-disable-line no-unused-vars
+  const [selectShowroom, setShowroom] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectPFactorGI, setPFactorGI] = useState([]);// eslint-disable-line no-unused-vars
+  const [selectEFactorGI, setEFactorGI] = useState([]);// eslint-disable-line no-unused-vars
 
   // Category select data step1 
   const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
@@ -139,71 +167,8 @@ const Start = ({ intl }) => {
   // Category select data step3
   const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
 
-  const setCategory = () => {   // eslint-disable-line no-unused-vars       
-    // console.log(categoryList.Data.length);
-    let preKey = '';
-    categoryList1 = [];
-    categoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
-      if (preKey !== item.Category1 ){
-          preKey = item.Category1 ;
-          categoryList1.push({label:preKey,value:preKey});
-      }
-    });
-    setSelectDataTypeStep1(categoryList1)
-    
-  }
-  useEffect(() => {
-    axios.post("/api/GetIndustry_TotalCategory_List")
-    .then(function (response) {
-      
-      console.log(response);
-      categoryList = response.data; // eslint-disable-line no-unused-vars
-      setCategory();
-      // 
-      // loginUserAction(values, history); // 여기가 로그인 확인
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  },[]);
-
-  
-
   const [activeFirstTab, setActiveFirstTab] = useState('1');
   
-  const category1Change = value =>{
-    setSelectedOptionsStep1(value);
-    setSelectedOptionsStep2([]); 
-    setSelectedOptionsStep3([]); 
-    console.log(value);
-    let preKey = '-1';
-    categoryList1 = [];
-    categoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
-      if (value.value === item.Category1 && preKey !== item.Category2 ){
-          preKey = item.Category2 ;
-          categoryList1.push({label:preKey,value:preKey});
-      }
-    });
-    setSelectDataTypeStep2(categoryList1);
-    console.log(categoryList1);
-  }
-  const category2Change = value =>{
-
-    console.log(value);
-    console.log(selectedOptionsStep1);
-    setSelectedOptionsStep2(value); 
-    setSelectedOptionsStep3([]);
-    let preKey = '-1';
-    categoryList2 = []; 
-    categoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
-      if (selectedOptionsStep1.value === item.Category1 && value.value === item.Category2 && preKey !== item.Category3 ){
-          preKey = item.Category3 ;
-          categoryList2.push({label:preKey,value:preKey});
-      }
-    });
-    setSelectDataTypeStep3(categoryList2);
-    console.log(categoryList2); 
-  }
   const dateString = (dateValue) => {  // eslint-disable-line no-unused-vars
     let retStr = '';
     retStr = retStr.concat(dateValue.getFullYear());
@@ -221,7 +186,117 @@ const Start = ({ intl }) => {
     }
     return retStr;
   }
+
+  const setCategory = () => {   // eslint-disable-line no-unused-vars       
+    // console.log(categoryList.Data.length);
+    let preKey = '';
+    categoryList1 = [];
+    let categoryData = {}; // eslint-disable-line no-unused-vars
+    categoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
+      if ( index === 0 ){
+         categoryData = item; // eslint-disable-line no-unused-vars
+      }
+      if (preKey !== item.Category1 ){
+          preKey = item.Category1 ;
+          categoryList1.push({label:preKey,value:preKey});
+      }
+    });
+    setSelectDataTypeStep1(categoryList1);
+    
+
+    /*
+    const param1  = {
+      FromDate : dateString(startDateRange), 
+      ToDate :dateString(endDateRange), 
+      Category1 : categoryData.Category1 ,
+      Category2 : categoryData.Category2 ,
+      Category3 : categoryData.Category3 ,
+      Keyword :selectKeyword
+    } ; // callShowroomApi , callPFactorTrendQuadApi , callEFactorTrendQuadApi , callEFactorGIApi
+   const param2 = { // eslint-disable-line no-unused-vars
+      FromDate : dateString(startDateRange), 
+      ToDate : dateString(endDateRange), 
+      Category1 : categoryData.Category1 ,
+      Category2 : categoryData.Category2 ,
+      Category3 : categoryData.Category3 ,
+      Keyword : selectKeyword ,
+      Category_upper : selectCategoryUpper,
+      Name :selectName
+    } ; */ // callPFactorTrendAndFactorApi , callEFactorTrendAndFactorApi , callEFactorGIApi   
+    param1 = showroomp; // 나중에 조회 조건을 세팅하는 것으로 수정
+    callShowroomApi(param1,setShowroom);
+    // console.log(activeFirstTab);
+    if (activeFirstTab === '1') {
+      param1 = pfactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callPFactorTrendQuadApi(param1,setPFactorTrendQuad);
+      param1 = pfactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callPFactorTrendAndFactorApi(param1,setPFactorTrendAndFactor);
+      param1 = pfactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callPFactorGIApi(param1,setPFactorGI);
+    }
+    else{
+      param1 = efactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callEFactorTrendQuadApi(param1,setEFactorTrendQuad);
+      param1 = efactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callEFactorTrendAndFactorApi(param1,setEFactorTrendAndFactor);
+      param1 = efactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
+      callEFactorGIApi(param1,setEFactorGI);
+    }
+  }
+  useEffect(() => {
+    axios.post("/api/GetIndustry_TotalCategory_List")
+    .then(function (response) {
+      
+      // console.log(response);
+      categoryList = response.data; // eslint-disable-line no-unused-vars
+      setCategoryList(categoryList);
+      setCategory();
+      // 
+      // loginUserAction(values, history); // 여기가 로그인 확인
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  },[]);
+
+  const category1Change = value =>{
+    setSelectedOptionsStep1(value);
+    setSelectedOptionsStep2([]); 
+    setSelectedOptionsStep3([]); 
+    // console.log(value);
+    let preKey = '-1';
+    categoryList1 = [];
+    // console.log(selectCategoryList);
+    selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
+      if (value.value === item.Category1 && preKey !== item.Category2 ){
+          preKey = item.Category2 ;
+          categoryList1.push({label:preKey,value:preKey});
+      }
+    });
+    setSelectDataTypeStep2(categoryList1);
+    // console.log(categoryList1);
+  }
+  const category2Change = value =>{
+
+    // console.log(value);
+    // console.log(selectedOptionsStep1);
+    setSelectedOptionsStep2(value); 
+    setSelectedOptionsStep3([]);
+    let preKey = '-1';
+    categoryList2 = []; 
+    selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
+      if (selectedOptionsStep1.value === item.Category1 && value.value === item.Category2 && preKey !== item.Category3 ){
+          preKey = item.Category3 ;
+          categoryList2.push({label:preKey,value:preKey});
+      }
+    });
+    setSelectDataTypeStep3(categoryList2);
+    // console.log(categoryList2); 
+  }
+  
   const handleSearchClick = e =>{ // eslint-disable-line no-unused-vars
+      
+      /*
       const param1  = {
           FromDate : dateString(startDateRange), 
           ToDate :dateString(endDateRange), 
@@ -239,19 +314,33 @@ const Start = ({ intl }) => {
           Keyword : selectKeyword ,
           Category_upper : selectCategoryUpper,
           Name :selectName
-        } ; // callPFactorTrendAndFactorApi , callEFactorTrendAndFactorApi , callEFactorGIApi
-
+        } ; */ // callPFactorTrendAndFactorApi , callEFactorTrendAndFactorApi , callEFactorGIApi  
+      param1 = showroomp; // 나중에 조회 조건을 세팅하는 것으로 수정
       callShowroomApi(param1,setShowroom);
-      callPFactorTrendQuadApi(param1,setPFactorTrendQuad);
-      callPFactorTrendAndFactorApi(param2,setPFactorTrendAndFactor);
-      callPFactorGIApi(param1,setPFactorGI);
-      callEFactorTrendQuadApi(param1,setEFactorTrendQuad);
-      callEFactorTrendAndFactorApi(param2,setEFactorTrendAndFactor);
-      callEFactorGIApi(param1,setEFactorGI);
+      // console.log(activeFirstTab);
+      if (activeFirstTab === '1') {
+        param1 = pfactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callPFactorTrendQuadApi(param1,setPFactorTrendQuad);
+        param1 = pfactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callPFactorTrendAndFactorApi(param1,setPFactorTrendAndFactor);
+        param1 = pfactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callPFactorGIApi(param1,setPFactorGI);
+      }
+      else{
+        param1 = efactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callEFactorTrendQuadApi(param1,setEFactorTrendQuad);
+        param1 = efactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callEFactorTrendAndFactorApi(param1,setEFactorTrendAndFactor);
+        param1 = efactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
+        callEFactorGIApi(param1,setEFactorGI);
+      }
+      
+      
       // console.log(dateString(startDateRange) , dateString(endDateRange) , selectedOptionsStep1.value , selectedOptionsStep2.value , selectedOptionsStep3.value); 
   }
-
-  
+  const onSearchKey = e =>{ // eslint-disable-line no-unused-vars
+    console.log('adasdasd');
+  }
   return (
     <>
       <Row>
@@ -330,7 +419,12 @@ const Start = ({ intl }) => {
                         </FormGroup>
                       </td>
                       <th style={{ width:'10%' }}>Product(下) Category</th>
-                      <td style={{ width:'40%' }}>No Keywords</td>
+                      <td style={{ width:'40%' }}> <input type="text"
+                                                            name="keyword"
+                                                            id="search"
+                                                            placeholder='No Keywords'
+                                                            onKeyPress={(e) => onSearchKey(e)}
+                                                          /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -359,7 +453,7 @@ const Start = ({ intl }) => {
               {/* 이미지 갤러리 */}
               <div className="showroom-gallery">
                 {/* 이미지 갤러리 */}
-                <ShowRoom />
+                <ShowRoom  ref={showRoonGetData} />
               </div>
             </CardBody>
           </Card>
@@ -418,7 +512,8 @@ const Start = ({ intl }) => {
               <div className="clearfix box-line">
                 <div className="box left">
                   {/* 각 차트별 height 값은 props로 전달 차트 */}
-                  <ScatterDatetime height={550} />
+                  {/* <Bubble height={550} /> */}
+                  <Scatter height={550} />
                 </div>
                 <div className="box right">
                   <div className="chart-area">
@@ -464,7 +559,7 @@ const Start = ({ intl }) => {
                       <ReactTableWithPaginationCard />
                     </div>
                     <div className="box right">
-                      <Bubble height={500} />
+                      <Bubble height={400} />
                     </div>
                   </div>
                 </div>
@@ -475,6 +570,7 @@ const Start = ({ intl }) => {
       {/* e:grobal index analysis */}
     </>
   );
+
 };
 
 export default injectIntl(Start);
