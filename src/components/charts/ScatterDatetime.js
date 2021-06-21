@@ -208,45 +208,45 @@ const ScatterDatetime = ({height}) => {
         setScatterDatetimeOption({
             series: seriesData,
             options: {
-              chart: {
-                height: 350,
-                type: 'scatter',
-                zoom: {
-                  type: 'xy'
-                }
-              },
-              dataLabels: {
-                enabled: true,
-                formatter: function(value, { seriesIndex, dataPointIndex, w }) {
-                  return w.config.series[seriesIndex].name
+                chart: {
+                    height: 350,
+                    type: 'scatter',
+                    zoom: {
+                        type: 'xy'
+                    }
                 },
-                offsetX: 0,
-                offsetY: -8
-              },
-              grid: {
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+                        return w.config.series[seriesIndex].name
+                    },
+                    offsetX: 0,
+                    offsetY: -8
+                },
+                grid: {
+                    xaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
+                    yaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
+                },
                 xaxis: {
-                  lines: {
-                    show: true
-                  }
+                    min: 0.9,
+                    max: 5.1, //x축은 소수점이 안먹힘
+                    type: 'category',
+                    tickAmount: 2
                 },
                 yaxis: {
-                  lines: {
-                    show: true
-                  }
-                },
-              },
-              xaxis: {
-                min: 0.9,
-                max: 5.1, //x축은 소수점이 안먹힘
-                type: 'category',
-                tickAmount: 2
-              },
-              yaxis: {
-                 min: 0.9,
-                 max: 2.1,
-                 tickAmount: 2,
-                 show: false
-              }
+                    min: 0.9,
+                    max: 2.1,
+                    tickAmount: 2,
+                    show: false
+                }
             }
         });
         
