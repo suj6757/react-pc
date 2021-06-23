@@ -33,10 +33,30 @@ const validateEmail = (value) => {
     return error;
 };
 
+// 처음 있던 소스 백업
+// const callLoginApi = async (values,setResponsData) =>{ // eslint-disable-line no-unused-vars
+
+//   const userInfo = { UserId : 'testuser', 
+//                      UserPassword : '1234', }; 
+//   /* const userInfo = { UserId : values.email, 
+//                      UserPassword : values.password, }; */
+//   await axios.post("/api/Login",userInfo)
+//     .then(function (response) {
+//       console.log(response);
+//       setResponsData(JSON.stringify(response) );
+//       // loginUserAction(values, history); // 여기가 로그인 확인
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// };
+
 const Login = ({ history, loading, error, loginUserAction }) => {
     const [email] = useState('demo@gogo.com');
     const [password] = useState('gogo123');
     const store = useSelector(state => state.authUser);
+    // dispatch : 최신 Hook 방식 
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (error) {
@@ -44,14 +64,17 @@ const Login = ({ history, loading, error, loginUserAction }) => {
         }
     }, [error]);
 
-    const onUserLogin = (values) => { 
+    const onUserLogin = (values) => {
         if (!loading) {
             if (values.email !== '' && values.password !== '') {         
                 //이메일, 비밀번호
-                console.log('param : ', values);
+                console.log('param!! : ', values);
                 
-                //액션 호출
-                loginUserAction(values, history);
+                // dispatch : 최신 Hook 방식 (loginUser는 액션명)
+                dispatch(loginUser(values, history));
+
+                // dispatch : 예전 connect 방식 (loginUserAction는 액션 객체 생성 함수명)
+                // loginUserAction(values, history);
 
                 //스토어
                 console.log('result : ', store);
@@ -152,12 +175,16 @@ const Login = ({ history, loading, error, loginUserAction }) => {
     );
 };
 
-const mapStateToProps = ({ authUser }) => {
-    const { loading, error } = authUser;
+// dispatch : 예전 connect 방식
+// const mapStateToProps = ({ authUser }) => {
+//     const { loading, error } = authUser;
     
-    return { loading, error };
-};
+//     return { loading, error };
+// };
 
-export default connect(mapStateToProps, {
-    loginUserAction: loginUser,
-})(Login);
+// export default connect(mapStateToProps, {
+//     loginUserAction: loginUser,
+// })(Login);
+
+// dispatch : 최신 Hook 방식
+export default Login;
