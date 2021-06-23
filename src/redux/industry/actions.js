@@ -36,8 +36,9 @@ export const getIndustryPfactorGiRelatedwords = () => ({
     type: TREND_INDUSTRY_PFACTOR_GI_RELATEDWORDS,
 });
 
-export const getIndustryPfactorTrendandfactor = () => ({
+export const getIndustryPfactorTrendandfactor = (searchCondition) => ({
     type: TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR,
+    payload: searchCondition
 });
 
 export const getIndustryPfactorTrendquad = () => ({
