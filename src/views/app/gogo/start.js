@@ -35,6 +35,7 @@ import pfactorgip from '../../../data/pfactorgip';  // eslint-disable-line no-un
 import pfactorgirelatedwordsp from '../../../data/pfactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
 import pfactortrendandfactorp from '../../../data/pfactortrendandfactorp';  // eslint-disable-line no-unused-vars
 import pfactortrendquadp from '../../../data/pfactortrendquadp';  // eslint-disable-line no-unused-vars
+import { connect } from 'formik';
 
 // import Breadcrumb from '../../../containers/navs/Breadcrumb';
 
@@ -132,60 +133,69 @@ const callShowroomApi =  async (paramValue,setShowroom) =>{ // eslint-disable-li
       console.log(error);
     });
 };
+
 const Start = ({ intl }) => {
-  let param1 = {};
-  const [startDateRange, setStartDateRange] = useState(new Date());
-  const [endDateRange, setEndDateRange] = useState(new Date());
-  const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
-  const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
-  const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
-  let categoryList = [];
-  let categoryList1 = []; // eslint-disable-line no-unused-vars
-  let categoryList2 = []; // eslint-disable-line no-unused-vars
-  const categoryList3 = [] ; // eslint-disable-line no-unused-vars
-  const { messages } = intl;
-  /*  함수 호출 전달용    */
+    let param1 = {};
+    const [startDateRange, setStartDateRange] = useState(new Date());
+    const [endDateRange, setEndDateRange] = useState(new Date());
+    const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
+    const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
+    const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
+    let categoryList = [];
+    let categoryList1 = []; // eslint-disable-line no-unused-vars
+    let categoryList2 = []; // eslint-disable-line no-unused-vars
+    const categoryList3 = [] ; // eslint-disable-line no-unused-vars
+    const { messages } = intl;
 
-  const [selectShowroom, setShowroom] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorGI, setPFactorGI] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorGI, setEFactorGI] = useState([]);// eslint-disable-line no-unused-vars
+    /*  함수 호출 전달용    */
+    const [selectShowroom, setShowroom] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorGI, setPFactorGI] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorGI, setEFactorGI] = useState([]);// eslint-disable-line no-unused-vars
 
-  // Category select data step1 
-  const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step1 
+    const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
 
-  // Category select data step2 
-  const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step2 
+    const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
 
-  // Category select data step3
-  const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step3
+    const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
 
-  const [activeFirstTab, setActiveFirstTab] = useState('1');
+    const [activeFirstTab, setActiveFirstTab] = useState('1');
   
-  const dateString = (dateValue) => {  // eslint-disable-line no-unused-vars
-    let retStr = '';
-    retStr = retStr.concat(dateValue.getFullYear());
-    if (dateValue.getMonth() < 10){
-      retStr = retStr.concat('-0' ,dateValue.getMonth()+1);
+    //datePicker format 수정
+    const dateString = (dateValue) => {
+        let retStr = '';
+
+        //Year
+        retStr = retStr.concat(dateValue.getFullYear());
+        
+        //Month
+        if(dateValue.getMonth() < 10) {
+          retStr = retStr.concat('-0', dateValue.getMonth() + 1);
+        }
+        else {
+          retStr = retStr.concat('-', dateValue.getMonth() + 1);
+        }
+
+        //Date
+        if(dateValue.getDate() < 10) {
+          retStr = retStr.concat('-0', dateValue.getDate() + 1);
+        }
+        else {
+          retStr = retStr.concat('-', dateValue.getDate() + 1);
+        }
+
+        return retStr;
     }
-    else{
-      retStr = retStr.concat('-' ,dateValue.getMonth()+1);
-    }
-    if (dateValue.getDate() < 10){
-      retStr = retStr.concat('-0' ,dateValue.getDate()+1);
-    }
-    else{
-      retStr = retStr.concat('-' ,dateValue.getDate()+1);
-    }
-    return retStr;
-  }
 
   const setCategory = () => {   // eslint-disable-line no-unused-vars       
     // console.log(categoryList.Data.length);
@@ -294,53 +304,36 @@ const Start = ({ intl }) => {
     // console.log(categoryList2); 
   }
   
-  const handleSearchClick = e =>{ // eslint-disable-line no-unused-vars
-      
-      /*
-      const param1  = {
-          FromDate : dateString(startDateRange), 
-          ToDate :dateString(endDateRange), 
-          Category1 : selectedOptionsStep1.value,
-          Category2 : selectedOptionsStep2.value,
-          Category3 :  selectedOptionsStep3.value,
-          Keyword :selectKeyword
-        } ; // callShowroomApi , callPFactorTrendQuadApi , callEFactorTrendQuadApi , callEFactorGIApi
-       const param2 = {
-          FromDate : dateString(startDateRange), 
-          ToDate : dateString(endDateRange), 
-          Category1 : selectedOptionsStep1.value,
-          Category2 : selectedOptionsStep2.value,
-          Category3 :  selectedOptionsStep3.value,
-          Keyword : selectKeyword ,
-          Category_upper : selectCategoryUpper,
-          Name :selectName
-        } ; */ // callPFactorTrendAndFactorApi , callEFactorTrendAndFactorApi , callEFactorGIApi  
-      param1 = showroomp; // 나중에 조회 조건을 세팅하는 것으로 수정
-      callShowroomApi(param1,setShowroom);
-      // console.log(activeFirstTab);
-      if (activeFirstTab === '1') {
-        param1 = pfactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorTrendQuadApi(param1,setPFactorTrendQuad);
-        param1 = pfactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorTrendAndFactorApi(param1,setPFactorTrendAndFactor);
-        param1 = pfactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorGIApi(param1,setPFactorGI);
-      }
-      else{
-        param1 = efactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorTrendQuadApi(param1,setEFactorTrendQuad);
-        param1 = efactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorTrendAndFactorApi(param1,setEFactorTrendAndFactor);
-        param1 = efactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorGIApi(param1,setEFactorGI);
-      }
-      
-      
-      // console.log(dateString(startDateRange) , dateString(endDateRange) , selectedOptionsStep1.value , selectedOptionsStep2.value , selectedOptionsStep3.value); 
-  }
-  const onSearchKey = e =>{ // eslint-disable-line no-unused-vars
-    console.log('adasdasd');
-  }
+    const handleSearchClick = (e) => {
+        /*
+        {
+          FromDate : "2021-06-15", 
+          ToDate : "2021-06-20", 
+          Category1 : "패션의류",
+          Category2 : "여성의류",
+          Category3 : "니트/스웨터",
+          Keyword : "",
+          Category_upper : "디테일",
+          Name : "슬릿넥"
+        }
+        */
+
+        var param = {};
+        param.FromDate = dateString(startDateRange);
+        param.ToDate = dateString(endDateRange);
+        param.Category1 = selectedOptionsStep1.value;
+        param.Category2 = selectedOptionsStep2.value;
+        param.Category3 = selectedOptionsStep3.value;
+        param.Keyword = selectKeyword;
+
+        console.log('param : ', param);
+    }
+
+    //keyword check(validate) ? setState
+    const onSearchKey = e => {
+        setKeyword(e.target.value);
+    }
+
   return (
     <>
       <Row>
@@ -420,10 +413,10 @@ const Start = ({ intl }) => {
                       </td>
                       <th style={{ width:'10%' }}>Product(下) Category</th>
                       <td style={{ width:'40%' }}> <input type="text"
-                                                            name="keyword"
-                                                            id="search"
-                                                            placeholder='No Keywords'
-                                                            onKeyPress={(e) => onSearchKey(e)}
+                                                          name="keyword"
+                                                          id="search"
+                                                          placeholder='No Keywords'
+                                                          onKeyPress={(e) => onSearchKey(e)}
                                                           /></td>
                     </tr>
                   </tbody>
@@ -574,3 +567,13 @@ const Start = ({ intl }) => {
 };
 
 export default injectIntl(Start);
+
+// const mapStateToProps = ({ authUser }) => {
+//   const { loading, error } = authUser;
+
+//   return { loading, error };
+// }
+
+// export default connect(mapStateToProps, {
+//     loginUserAction : loginUser,
+// })(Start);
