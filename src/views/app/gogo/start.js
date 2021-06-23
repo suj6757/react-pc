@@ -334,6 +334,8 @@ const Start = ({ intl }) => {
         param.Category2 = selectedOptionsStep2.value;
         param.Category3 = selectedOptionsStep3.value;
         param.Keyword = selectKeyword;
+        param.Category_upper = '스타일';
+        param.Name = '베이직';
         //setParam(param);
         dispatch(getSearchCondition(param));
 
