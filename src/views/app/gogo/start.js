@@ -35,6 +35,7 @@ import pfactorgip from '../../../data/pfactorgip';  // eslint-disable-line no-un
 import pfactorgirelatedwordsp from '../../../data/pfactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
 import pfactortrendandfactorp from '../../../data/pfactortrendandfactorp';  // eslint-disable-line no-unused-vars
 import pfactortrendquadp from '../../../data/pfactortrendquadp';  // eslint-disable-line no-unused-vars
+import { connect } from 'formik';
 
 // import Breadcrumb from '../../../containers/navs/Breadcrumb';
 
@@ -169,23 +170,31 @@ const Start = ({ intl }) => {
 
   const [activeFirstTab, setActiveFirstTab] = useState('1');
   
-  const dateString = (dateValue) => {  // eslint-disable-line no-unused-vars
-    let retStr = '';
-    retStr = retStr.concat(dateValue.getFullYear());
-    if (dateValue.getMonth() < 10){
-      retStr = retStr.concat('-0' ,dateValue.getMonth()+1);
+    //datePicker format 수정
+    const dateString = (dateValue) => {
+        let retStr = '';
+
+        //Year
+        retStr = retStr.concat(dateValue.getFullYear());
+        
+        //Month
+        if(dateValue.getMonth() < 10) {
+          retStr = retStr.concat('-0', dateValue.getMonth() + 1);
+        }
+        else {
+          retStr = retStr.concat('-', dateValue.getMonth() + 1);
+        }
+
+        //Date
+        if(dateValue.getDate() < 10) {
+          retStr = retStr.concat('-0', dateValue.getDate() + 1);
+        }
+        else {
+          retStr = retStr.concat('-', dateValue.getDate() + 1);
+        }
+
+        return retStr;
     }
-    else{
-      retStr = retStr.concat('-' ,dateValue.getMonth()+1);
-    }
-    if (dateValue.getDate() < 10){
-      retStr = retStr.concat('-0' ,dateValue.getDate()+1);
-    }
-    else{
-      retStr = retStr.concat('-' ,dateValue.getDate()+1);
-    }
-    return retStr;
-  }
 
   const setCategory = () => {   // eslint-disable-line no-unused-vars       
     // console.log(categoryList.Data.length);
@@ -294,50 +303,29 @@ const Start = ({ intl }) => {
     // console.log(categoryList2); 
   }
   
-  const handleSearchClick = e =>{ // eslint-disable-line no-unused-vars
-      
-      /*
-      const param1  = {
-          FromDate : dateString(startDateRange), 
-          ToDate :dateString(endDateRange), 
-          Category1 : selectedOptionsStep1.value,
-          Category2 : selectedOptionsStep2.value,
-          Category3 :  selectedOptionsStep3.value,
-          Keyword :selectKeyword
-        } ; // callShowroomApi , callPFactorTrendQuadApi , callEFactorTrendQuadApi , callEFactorGIApi
-       const param2 = {
-          FromDate : dateString(startDateRange), 
-          ToDate : dateString(endDateRange), 
-          Category1 : selectedOptionsStep1.value,
-          Category2 : selectedOptionsStep2.value,
-          Category3 :  selectedOptionsStep3.value,
-          Keyword : selectKeyword ,
-          Category_upper : selectCategoryUpper,
-          Name :selectName
-        } ; */ // callPFactorTrendAndFactorApi , callEFactorTrendAndFactorApi , callEFactorGIApi  
-      param1 = showroomp; // 나중에 조회 조건을 세팅하는 것으로 수정
-      callShowroomApi(param1,setShowroom);
-      // console.log(activeFirstTab);
-      if (activeFirstTab === '1') {
-        param1 = pfactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorTrendQuadApi(param1,setPFactorTrendQuad);
-        param1 = pfactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorTrendAndFactorApi(param1,setPFactorTrendAndFactor);
-        param1 = pfactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callPFactorGIApi(param1,setPFactorGI);
-      }
-      else{
-        param1 = efactortrendquadp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorTrendQuadApi(param1,setEFactorTrendQuad);
-        param1 = efactortrendandfactorp; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorTrendAndFactorApi(param1,setEFactorTrendAndFactor);
-        param1 = efactorgip; // 나중에 조회 조건을 세팅하는 것으로 수정
-        callEFactorGIApi(param1,setEFactorGI);
-      }
-      
-      
-      // console.log(dateString(startDateRange) , dateString(endDateRange) , selectedOptionsStep1.value , selectedOptionsStep2.value , selectedOptionsStep3.value); 
-  }
+    const handleSearchClick = (e) => {
+        /*
+        {
+          FromDate : "2021-06-15", 
+          ToDate : "2021-06-20", 
+          Category1 : "패션의류",
+          Category2 : "여성의류",
+          Category3 : "니트/스웨터",
+          Keyword : "",
+          Category_upper : "디테일",
+          Name : "슬릿넥"
+        }
+        */
+
+        var param = {};
+        param.FromDate = dateString(startDateRange);
+        param.ToDate = dateString(endDateRange);
+        param.Category1 = selectedOptionsStep1.value;
+        param.Category2 = selectedOptionsStep2.value;
+        param.Category3 = selectedOptionsStep3.value;
+
+        console.log('param : ', param);
+    }
   const onSearchKey = e =>{ // eslint-disable-line no-unused-vars
     console.log('adasdasd');
   }
@@ -574,3 +562,13 @@ const Start = ({ intl }) => {
 };
 
 export default injectIntl(Start);
+
+// const mapStateToProps = ({ authUser }) => {
+//   const { loading, error } = authUser;
+
+//   return { loading, error };
+// }
+
+// export default connect(mapStateToProps, {
+//     loginUserAction : loginUser,
+// })(Start);
