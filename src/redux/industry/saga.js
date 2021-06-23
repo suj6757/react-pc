@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   TREND_INDUSTRY_EFACTOR_GI,
@@ -83,13 +84,23 @@ function* industryPfactorGiRelatedwords({ payload }){
   console.log('industryPfactorGiRelatedwords');
 }
 
+//우측 차트(바, 컬럼)
 export function* watchIndustryPfactorTrendandfactor() {
   // eslint-disable-next-line no-use-before-define
   yield takeEvery(TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR, industryPfactorTrendandfactor);
 }
 
+//우측 차트(바, 컬럼)
 function* industryPfactorTrendandfactor({ payload }){
-  console.log('industryPfactorTrendandfactor');
+    console.log('industryPfactorTrendandfactor');
+
+    axios.post("/api/GetIndustry_PFactor_TrendAndFactor", payload)
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 export function* watchIndustryPfactorTrendquad() {
@@ -118,7 +129,6 @@ export function* watchIndustryTotalcategoryList() {
   // eslint-disable-next-line no-use-before-define
   yield takeEvery(TREND_INDUSTRY_TOTALCATEGORY_LIST, industryTotalcategoryList);
 }
-
 
 export default function* rootSaga() {
   yield all([

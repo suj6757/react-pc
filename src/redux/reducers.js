@@ -7,16 +7,18 @@ import chatApp from './chat/reducer';
 import surveyListApp from './surveyList/reducer';
 import surveyDetailApp from './surveyDetail/reducer';
 import industryApp from './industry/reducer';
+import startApp from './start/reducer';
 
 const reducers = combineReducers({
-  menu,
-  settings,
-  authUser,
-  todoApp,
-  chatApp,
-  surveyListApp,
-  surveyDetailApp,
-  industryApp,
+    menu,
+    settings,
+    authUser,
+    todoApp,
+    chatApp,
+    surveyListApp,
+    surveyDetailApp,
+    industryApp,
+    startApp
 });
 
 export default reducers;

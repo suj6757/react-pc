@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactApexChart from "react-apexcharts";
 import { barChartOptions } from './config';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIndustryPfactorTrendandfactor } from '../../redux/actions';
 
 const Bar = ({height}) => {
+    const dispatch = useDispatch();
+    const store = useSelector(state => state.startApp);
+    
+
     //라인 옵션
     const [barOption, setBarOption] = React.useState(barChartOptions);
     //서버 호출 후 받는 임시 데이터(받을 파라미터)
@@ -24,12 +30,16 @@ const Bar = ({height}) => {
     React.useEffect(() => {
         var data = [];
         var category = [];
-
+        
+        console.log('ch : ', store);
         resData.SentimentFactorData.map((res) => {
             data.push(res.Value);
             category.push(res.name);
         });
 
+        dispatch(getIndustryPfactorTrendandfactor(store.SearchCondition));
+
+        /*
         setBarOption({
             series: [{
                 name : "value",
@@ -45,7 +55,8 @@ const Bar = ({height}) => {
                 }
             }
         });
-    }, []);
+        */
+    }, [store]);
 
     return (
         <ReactApexChart options={barOption.options} series={barOption.series} type="bar" height={height} />

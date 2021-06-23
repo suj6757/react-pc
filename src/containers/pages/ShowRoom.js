@@ -54,8 +54,8 @@ const ShowRoom = React.forwardRef((props,ref) => { // eslint-disable-line no-unu
     const [thumbList , setThumbList] = useState(thumbs); // eslint-disable-line no-unused-vars
     useImperativeHandle(ref, () => ({
       showRoonGetCallApi(objShowRoomData) {
-        console.log('ÀÚ½ÄÀ» ÄÝÇßÀ½');
-        console.log(objShowRoomData);
+        //console.log('ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+        //console.log(objShowRoomData);
         setThumbList(objShowRoomData);
       }
     }));

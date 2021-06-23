@@ -79,6 +79,9 @@ export const TREND_INDUSTRY_PFACTOR_TRENDQUAD = 'TREND_INDUSTRY_PFACTOR_TRENDQUA
 export const TREND_INDUSTRY_SHOWROOM = 'TREND_INDUSTRY_SHOWROOM';
 export const TREND_INDUSTRY_TOTALCATEGORY_LIST = 'TREND_INDUSTRY_TOTALCATEGORY_LIST';
 
+/* START */
+export const SEARCH_CONDITION = 'SEARCH_CONDITION';
+
 export * from './menu/actions';
 export * from './settings/actions';
 export * from './auth/actions';
@@ -87,3 +90,4 @@ export * from './chat/actions';
 export * from './surveyList/actions';
 export * from './surveyDetail/actions';
 export * from './industry/actions';
+export * from './start/actions';

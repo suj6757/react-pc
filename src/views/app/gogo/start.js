@@ -35,7 +35,8 @@ import pfactorgip from '../../../data/pfactorgip';  // eslint-disable-line no-un
 import pfactorgirelatedwordsp from '../../../data/pfactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
 import pfactortrendandfactorp from '../../../data/pfactortrendandfactorp';  // eslint-disable-line no-unused-vars
 import pfactortrendquadp from '../../../data/pfactortrendquadp';  // eslint-disable-line no-unused-vars
-import { connect } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSearchCondition } from '../../../redux/actions';
 
 // import Breadcrumb from '../../../containers/navs/Breadcrumb';
 
@@ -118,7 +119,6 @@ const callShowroomApi =  async (paramValue,setShowroom) =>{ // eslint-disable-li
    
    await axios.post("/api/GetIndustry_Showroom",paramValue)
     .then(function (response) {
-      console.log(response);
       if (response.data.ErrorCode === 'OK') {
         
         showRoomChange(response.data);
@@ -135,6 +135,9 @@ const callShowroomApi =  async (paramValue,setShowroom) =>{ // eslint-disable-li
 };
 
 const Start = ({ intl }) => {
+    const dispatch = useDispatch();
+    const { industryApp } = useSelector(state => state);
+
     let param1 = {};
     const [startDateRange, setStartDateRange] = useState(new Date());
     const [endDateRange, setEndDateRange] = useState(new Date());
@@ -254,20 +257,20 @@ const Start = ({ intl }) => {
     }
   }
   useEffect(() => {
-    axios.post("/api/GetIndustry_TotalCategory_List")
-    .then(function (response) {
-      
-      // console.log(response);
-      categoryList = response.data; // eslint-disable-line no-unused-vars
-      setCategoryList(categoryList);
-      setCategory();
-      // 
-      // loginUserAction(values, history); // 여기가 로그인 확인
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  },[]);
+      axios.post("/api/GetIndustry_TotalCategory_List")
+      .then(function (response) {
+        
+        // console.log(response);
+        categoryList = response.data; // eslint-disable-line no-unused-vars
+        setCategoryList(categoryList);
+        setCategory();
+        // 
+        // loginUserAction(values, history); // 여기가 로그인 확인
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },[industryApp]);
 
   const category1Change = value =>{
     setSelectedOptionsStep1(value);
@@ -303,7 +306,13 @@ const Start = ({ intl }) => {
     setSelectDataTypeStep3(categoryList2);
     // console.log(categoryList2); 
   }
-  
+
+    //검색조건 스토어 저장
+    const setParam = (value) => {
+        dispatch(getSearchCondition(value));
+    }
+    
+    //검색조건 엔터버튼 클릭
     const handleSearchClick = (e) => {
         /*
         {
@@ -317,7 +326,7 @@ const Start = ({ intl }) => {
           Name : "슬릿넥"
         }
         */
-
+        
         var param = {};
         param.FromDate = dateString(startDateRange);
         param.ToDate = dateString(endDateRange);
@@ -325,8 +334,10 @@ const Start = ({ intl }) => {
         param.Category2 = selectedOptionsStep2.value;
         param.Category3 = selectedOptionsStep3.value;
         param.Keyword = selectKeyword;
+        //setParam(param);
+        dispatch(getSearchCondition(param));
 
-        console.log('param : ', param);
+        console.log(industryApp);
     }
 
     //keyword check(validate) ? setState
