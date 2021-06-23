@@ -133,42 +133,43 @@ const callShowroomApi =  async (paramValue,setShowroom) =>{ // eslint-disable-li
       console.log(error);
     });
 };
+
 const Start = ({ intl }) => {
-  let param1 = {};
-  const [startDateRange, setStartDateRange] = useState(new Date());
-  const [endDateRange, setEndDateRange] = useState(new Date());
-  const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
-  const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
-  const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
-  let categoryList = [];
-  let categoryList1 = []; // eslint-disable-line no-unused-vars
-  let categoryList2 = []; // eslint-disable-line no-unused-vars
-  const categoryList3 = [] ; // eslint-disable-line no-unused-vars
-  const { messages } = intl;
-  /*  함수 호출 전달용    */
+    let param1 = {};
+    const [startDateRange, setStartDateRange] = useState(new Date());
+    const [endDateRange, setEndDateRange] = useState(new Date());
+    const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
+    const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
+    const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
+    let categoryList = [];
+    let categoryList1 = []; // eslint-disable-line no-unused-vars
+    let categoryList2 = []; // eslint-disable-line no-unused-vars
+    const categoryList3 = [] ; // eslint-disable-line no-unused-vars
+    const { messages } = intl;
 
-  const [selectShowroom, setShowroom] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectPFactorGI, setPFactorGI] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectEFactorGI, setEFactorGI] = useState([]);// eslint-disable-line no-unused-vars
+    /*  함수 호출 전달용    */
+    const [selectShowroom, setShowroom] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorTrendQuad, setPFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorTrendAndFactor, setPFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorTrendQuad, setEFactorTrendQuad] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorTrendAndFactor, setEFactorTrendAndFactor] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectPFactorGI, setPFactorGI] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectEFactorGI, setEFactorGI] = useState([]);// eslint-disable-line no-unused-vars
 
-  // Category select data step1 
-  const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step1 
+    const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
 
-  // Category select data step2 
-  const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step2 
+    const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
 
-  // Category select data step3
-  const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
+    // Category select data step3
+    const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
 
-  const [activeFirstTab, setActiveFirstTab] = useState('1');
+    const [activeFirstTab, setActiveFirstTab] = useState('1');
   
     //datePicker format 수정
     const dateString = (dateValue) => {
@@ -323,12 +324,16 @@ const Start = ({ intl }) => {
         param.Category1 = selectedOptionsStep1.value;
         param.Category2 = selectedOptionsStep2.value;
         param.Category3 = selectedOptionsStep3.value;
+        param.Keyword = selectKeyword;
 
         console.log('param : ', param);
     }
-  const onSearchKey = e =>{ // eslint-disable-line no-unused-vars
-    console.log('adasdasd');
-  }
+
+    //keyword check(validate) ? setState
+    const onSearchKey = e => {
+        setKeyword(e.target.value);
+    }
+
   return (
     <>
       <Row>
@@ -408,10 +413,10 @@ const Start = ({ intl }) => {
                       </td>
                       <th style={{ width:'10%' }}>Product(下) Category</th>
                       <td style={{ width:'40%' }}> <input type="text"
-                                                            name="keyword"
-                                                            id="search"
-                                                            placeholder='No Keywords'
-                                                            onKeyPress={(e) => onSearchKey(e)}
+                                                          name="keyword"
+                                                          id="search"
+                                                          placeholder='No Keywords'
+                                                          onKeyPress={(e) => onSearchKey(e)}
                                                           /></td>
                     </tr>
                   </tbody>
