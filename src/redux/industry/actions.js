@@ -55,8 +55,9 @@ export const getIndustryShowroom = () => ({
 export const getIndustryTotalcategoryList = () => ({
     type: TREND_INDUSTRY_TOTALCATEGORY_LIST
 });
-export const getSuccessIndustryTotalcategoryList = () => ({
-    type: TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST
+export const getSuccessIndustryTotalcategoryList = (param) => ({
+    type: TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
+    payload: param
 });
 export const getErrorIndustryTotalcategoryList = () => ({
     type: TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST

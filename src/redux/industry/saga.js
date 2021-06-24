@@ -30,9 +30,6 @@ import {
   getErrorIndustryTotalcategoryList,
 } from './actions';
 
-import { adminRoot, currentUser } from '../../constants/defaultValues';
-import { setCurrentUser } from '../../helpers/Utils';
-
 function* industryEfactorGi({ payload }){
   // eslint-disable-next-line no-use-before-define
   console.log('industryEfactorGi');
@@ -125,22 +122,15 @@ export function* watchIndustryShowroom() {
 //검색조건 카테고리
 
 const industryTotalcategoryListAsync = async() => {
-    await axios.post("/api/GetIndustry_TotalCategory_List")
-    .then((response) => response)
-    .catch((error) => error);
+    return axios.post("/api/GetIndustry_TotalCategory_List");
 }
 
-function* industryTotalcategoryList() {
-    console.log('iiiiiiiii')
+function* industryTotalcategoryList({ payload }) {
     try {
         const result = yield call(industryTotalcategoryListAsync);
-        setCurrentUser();
-        console.log('ssssssssss : ', result);
-
-        yield put(getSuccessIndustryTotalcategoryList());
+        yield put(getSuccessIndustryTotalcategoryList(result));
     }
     catch(error) {
-        console.log('eeeeeeeeeeee')
         yield put(getErrorIndustryTotalcategoryList());
     }
 }
