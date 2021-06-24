@@ -11,6 +11,8 @@ import {
   TREND_INDUSTRY_PFACTOR_TRENDQUAD,
   TREND_INDUSTRY_SHOWROOM,
   TREND_INDUSTRY_TOTALCATEGORY_LIST,
+  TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
+  TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST,
 } from '../actions';
 
 import {
@@ -24,8 +26,12 @@ import {
   getIndustryPfactorTrendquad,
   getIndustryShowroom,
   getIndustryTotalcategoryList,
+  getSuccessIndustryTotalcategoryList,
+  getErrorIndustryTotalcategoryList,
 } from './actions';
 
+import { adminRoot, currentUser } from '../../constants/defaultValues';
+import { setCurrentUser } from '../../helpers/Utils';
 
 function* industryEfactorGi({ payload }){
   // eslint-disable-next-line no-use-before-define
@@ -86,14 +92,9 @@ function* industryPfactorGiRelatedwords({ payload }){
 
 //우측 차트(바, 컬럼)
 export function* watchIndustryPfactorTrendandfactor() {
-  // eslint-disable-next-line no-use-before-define
-  yield takeEvery(TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR, industryPfactorTrendandfactor);
+    yield takeEvery(TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR, industryPfactorTrendandfactor);
 }
-
-//우측 차트(바, 컬럼)
-function* industryPfactorTrendandfactor({ payload }){
-    console.log('industryPfactorTrendandfactor');
-
+function* industryPfactorTrendandfactor({ payload }) {
     axios.post("/api/GetIndustry_PFactor_TrendAndFactor", payload)
     .then(function (response) {
         console.log(response);
@@ -121,13 +122,30 @@ export function* watchIndustryShowroom() {
   yield takeEvery(TREND_INDUSTRY_SHOWROOM, industryShowroom);
 }
 
-function* industryTotalcategoryList({ payload }){
-  console.log('industryTotalcategoryList');
+//검색조건 카테고리
+
+const industryTotalcategoryListAsync = async() => {
+    await axios.post("/api/GetIndustry_TotalCategory_List")
+    .then((response) => response)
+    .catch((error) => error);
 }
 
+function* industryTotalcategoryList() {
+    console.log('iiiiiiiii')
+    try {
+        const result = yield call(industryTotalcategoryListAsync);
+        setCurrentUser();
+        console.log('ssssssssss : ', result);
+
+        yield put(getSuccessIndustryTotalcategoryList());
+    }
+    catch(error) {
+        console.log('eeeeeeeeeeee')
+        yield put(getErrorIndustryTotalcategoryList());
+    }
+}
 export function* watchIndustryTotalcategoryList() {
-  // eslint-disable-next-line no-use-before-define
-  yield takeEvery(TREND_INDUSTRY_TOTALCATEGORY_LIST, industryTotalcategoryList);
+    yield takeEvery(TREND_INDUSTRY_TOTALCATEGORY_LIST, industryTotalcategoryList);
 }
 
 export default function* rootSaga() {

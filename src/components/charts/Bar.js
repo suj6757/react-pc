@@ -2,12 +2,12 @@ import React from 'react';
 import ReactApexChart from "react-apexcharts";
 import { barChartOptions } from './config';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIndustryPfactorTrendandfactor } from '../../redux/actions';
+import { getIndustryPfactorTrendandfactor, getIndustryTotalcategoryList } from '../../redux/actions';
 
 const Bar = ({height}) => {
     const dispatch = useDispatch();
     const store = useSelector(state => state.startApp);
-    
+    const store2 = useSelector(state => state.industryApp);
 
     //라인 옵션
     const [barOption, setBarOption] = React.useState(barChartOptions);
@@ -31,13 +31,15 @@ const Bar = ({height}) => {
         var data = [];
         var category = [];
         
-        console.log('ch : ', store);
+        //console.log('ch : ', store);
         resData.SentimentFactorData.map((res) => {
             data.push(res.Value);
             category.push(res.name);
         });
-
-        dispatch(getIndustryPfactorTrendandfactor(store.SearchCondition));
+        
+        dispatch(getIndustryTotalcategoryList(''));
+        console.log('bbbbb : ', store2);
+        //dispatch(getIndustryPfactorTrendandfactor(store.SearchCondition));
 
         /*
         setBarOption({

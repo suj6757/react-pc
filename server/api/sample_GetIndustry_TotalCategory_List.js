@@ -32,7 +32,7 @@ router.use('/', (req, res) => {
     client_Test.GetIndustry_TotalCategory_List({}, function(err, data) {
         try {
             console.log('error : ', err);
-            console.log(data);
+            //console.log(data);
             //console.log(data.Datas);
             //console.log(data.Datas[0].Category1);
 

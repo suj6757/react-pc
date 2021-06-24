@@ -8,7 +8,9 @@ import {
     TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR,
     TREND_INDUSTRY_PFACTOR_TRENDQUAD,
     TREND_INDUSTRY_SHOWROOM,
-    TREND_INDUSTRY_TOTALCATEGORY_LIST
+    TREND_INDUSTRY_TOTALCATEGORY_LIST,
+    TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
+    TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST
 } from '../actions';
 
 export const getIndustryEfactorGi = () => ({
@@ -17,7 +19,6 @@ export const getIndustryEfactorGi = () => ({
 
 export const getIndustryEfactorGiRelatedwords = () => ({
     type: TREND_INDUSTRY_EFACTOR_GI_RELATEDWORDS,
-   
 });
 
 export const getIndustryEfactorTrendandfactor = () => ({
@@ -50,6 +51,13 @@ export const getIndustryShowroom = () => ({
  
 });
 
+//검색조건 카테고리
 export const getIndustryTotalcategoryList = () => ({
-    type: TREND_INDUSTRY_TOTALCATEGORY_LIST,
+    type: TREND_INDUSTRY_TOTALCATEGORY_LIST
+});
+export const getSuccessIndustryTotalcategoryList = () => ({
+    type: TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST
+});
+export const getErrorIndustryTotalcategoryList = () => ({
+    type: TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST
 });

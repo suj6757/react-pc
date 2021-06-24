@@ -1,4 +1,4 @@
-import React, { useState , useEffect ,createRef } from 'react'; // eslint-disable-line no-unused-vars
+import React, { useState , useEffect ,createRef } from 'react';
 import { 
   Row, 
   Card, 
@@ -7,14 +7,11 @@ import {
   FormGroup, 
   Nav,
   NavItem,
-  
   Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
-import axios from 'axios';// eslint-disable-line no-unused-vars
 import classnames from 'classnames';
 import Select from 'react-select';
-// import IntlMessages from '../../../helpers/IntlMessages';
 import DatePicker from 'react-datepicker';
 import { ko } from "date-fns/esm/locale";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,124 +23,148 @@ import Scatter from '../../../components/charts/ScatterDatetime';
 import { ReactTableWithPaginationCard } from '../../../containers/ui/ReactTableCards';
 import { Colxx } from '../../../components/common/CustomBootstrap';
 import CustomSelectInput from '../../../components/common/CustomSelectInput';
-// import showroomp from '../../../data/showroomp';  // eslint-disable-line no-unused-vars
-// import efactorgip from '../../../data/efactorgip';  // eslint-disable-line no-unused-vars
-// import efactorgirelatedwordsp from '../../../data/efactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
-// import efactortrendandfactorp from '../../../data/efactortrendandfactorp';  // eslint-disable-line no-unused-vars
-// import efactortrendquadp from '../../../data/efactortrendquadp';  // eslint-disable-line no-unused-vars
-// import pfactorgip from '../../../data/pfactorgip';  // eslint-disable-line no-unused-vars
-// import pfactorgirelatedwordsp from '../../../data/pfactorgirelatedwordsp';  // eslint-disable-line no-unused-vars
-// import pfactortrendandfactorp from '../../../data/pfactortrendandfactorp';  // eslint-disable-line no-unused-vars
-// import pfactortrendquadp from '../../../data/pfactortrendquadp';  // eslint-disable-line no-unused-vars
 import { useDispatch, useSelector } from 'react-redux';
-import { getSearchCondition } from '../../../redux/actions';
+import { getSearchCondition, getIndustryTotalcategoryList } from '../../../redux/actions';
+import axios from 'axios';
 
 const Start = ({ intl }) => {
-  const dispatch = useDispatch();
-  const { industryApp } = useSelector(state => state);
-  const [startDateRange, setStartDateRange] = useState(new Date());
-  const [endDateRange, setEndDateRange] = useState(new Date());
-  const { messages } = intl;
-
-  const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
-  const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
-
-  const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
-  const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
-  const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
-
-  const [selectKeyword, setKeyword] = useState('');// eslint-disable-line no-unused-vars
+    const dispatch = useDispatch();
+    const { industryApp } = useSelector(state => state.industryApp);
     
-  const [activeFirstTab, setActiveFirstTab] = useState('1');
-
-  //datePicker format 수정
-  const dateString = (dateValue) => {
-    let retStr = '';
-
-    //Year
-    retStr = retStr.concat(dateValue.getFullYear());
+    let param1 = {};
+    const [startDateRange, setStartDateRange] = useState(new Date());
+    const [endDateRange, setEndDateRange] = useState(new Date());
     
-    //Month
-    if(dateValue.getMonth() < 10) {
-      retStr = retStr.concat('-0', dateValue.getMonth() + 1);
-    }
-    else {
-      retStr = retStr.concat('-', dateValue.getMonth() + 1);
-    }
-
-    //Date
-    if(dateValue.getDate() < 10) {
-      retStr = retStr.concat('-0', dateValue.getDate() + 1);
-    }
-    else {
-      retStr = retStr.concat('-', dateValue.getDate() + 1);
-    }
-
-    return retStr;
-  }
-
-  useEffect(() => {
-     
-  },[industryApp]);
+    const [selectedOptionsStep1, setSelectedOptionsStep1] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep2, setSelectedOptionsStep2] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectedOptionsStep3, setSelectedOptionsStep3] = useState([]);// eslint-disable-line no-unused-vars
     
-  //검색조건 엔터버튼 클릭
-  const handleSearchClick = (e) => {
-      var param = {};
-      param.FromDate = dateString(startDateRange);
-      param.ToDate = dateString(endDateRange);
-      param.Category1 = selectedOptionsStep1.value;
-      param.Category2 = selectedOptionsStep2.value;
-      param.Category3 = selectedOptionsStep3.value;
-      param.Keyword = selectKeyword;
-      param.Category_upper = '스타일';
-      param.Name = '베이직';
+    const [selectDataTypeStep1,setSelectDataTypeStep1] = useState([]); // eslint-disable-line no-unused-vars
+    const [selectDataTypeStep2,setSelectDataTypeStep2] = useState([]); // eslint-disable-line no-unused-vars
+    const [selectDataTypeStep3,setSelectDataTypeStep3] = useState([]); // eslint-disable-line no-unused-vars
+
+    const [selectCategoryUpper , setCategoryUpper] = useState([]);// eslint-disable-line no-unused-vars
+    const [selectName , setName] = useState('');// eslint-disable-line no-unused-vars
+    const [selectCategoryList, setCategoryList] = useState([]);// eslint-disable-line no-unused-vars
+    
+    let categoryList = [];
+    let categoryList1 = [];
+    let categoryList2 = [];
+    const categoryList3 = [];
+    
+    const { messages } = intl;
+
+    const [selectKeyword, setKeyword] = useState('');      
+    const [activeFirstTab, setActiveFirstTab] = useState('1');
+
+    useEffect(() => {
+        axios.post("/api/GetIndustry_TotalCategory_List")
+        .then((response) => {
+            categoryList = response.data;
+            setCategoryList(categoryList);
+            setCategory();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }, []);
+
+    const setCategory = () => {
+        let preKey = '';
+        categoryList1 = [];
+        let categoryData = {};
+        categoryList.Data.forEach(function(item, index) {
+            if ( index === 0 ) {
+                categoryData = item;
+            }
+            if (preKey !== item.Category1 ){
+                preKey = item.Category1 ;
+                categoryList1.push({ label : preKey, value : preKey });
+            }
+        });
+        setSelectDataTypeStep1(categoryList1);
+    }
+  
+    const category1Change = value =>{
+        setSelectedOptionsStep1(value);
+        setSelectedOptionsStep2([]); 
+        setSelectedOptionsStep3([]);
       
-      // 검색조건 스토어에 저장
-      dispatch(getSearchCondition(param));
+        let preKey = '-1';
+        categoryList1 = [];
+        selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
+            if (value.value === item.Category1 && preKey !== item.Category2 ){
+                preKey = item.Category2 ;
+                categoryList1.push({label:preKey,value:preKey});
+            }
+        });
+        setSelectDataTypeStep2(categoryList1);
+    }
+    const category2Change = value =>{
+        setSelectedOptionsStep2(value); 
+        setSelectedOptionsStep3([]);
+        let preKey = '-1';
+        categoryList2 = []; 
+        selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
+            if (selectedOptionsStep1.value === item.Category1 && value.value === item.Category2 && preKey !== item.Category3 ){
+                preKey = item.Category3 ;
+                categoryList2.push({label:preKey,value:preKey});
+            }
+        });
+        setSelectDataTypeStep3(categoryList2);
+    }
 
-      console.log(industryApp);
-  }
+    useEffect(() => {
+      
+    }, [industryApp]);
 
-  //keyword check(validate) ? setState X
-  const onSearchKey = e => {
-      // 변경 예정
-      // setKeyword(e.target.value);
-  }
+    //datePicker format 수정
+    const dateString = (dateValue) => {
+        let retStr = '';
 
-  const category1Change = value =>{
-    // setSelectedOptionsStep1(value);
-    // setSelectedOptionsStep2([]); 
-    // setSelectedOptionsStep3([]); 
-    // // console.log(value);
-    // let preKey = '-1';
-    // categoryList1 = [];
-    // // console.log(selectCategoryList);
-    // selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
-    //   if (value.value === item.Category1 && preKey !== item.Category2 ){
-    //       preKey = item.Category2 ;
-    //       categoryList1.push({label:preKey,value:preKey});
-    //   }
-    // });
-    // setSelectDataTypeStep2(categoryList1);
-    // // console.log(categoryList1);
-  }
-  const category2Change = value =>{
-    // // console.log(value);
-    // // console.log(selectedOptionsStep1);
-    // setSelectedOptionsStep2(value); 
-    // setSelectedOptionsStep3([]);
-    // let preKey = '-1';
-    // categoryList2 = []; 
-    // selectCategoryList.Data.forEach(function(item,index){ // eslint-disable-line no-unused-vars
-    //   if (selectedOptionsStep1.value === item.Category1 && value.value === item.Category2 && preKey !== item.Category3 ){
-    //       preKey = item.Category3 ;
-    //       categoryList2.push({label:preKey,value:preKey});
-    //   }
-    // });
-    // setSelectDataTypeStep3(categoryList2);
-    // // console.log(categoryList2); 
-  }
+        //Year
+        retStr = retStr.concat(dateValue.getFullYear());
+        
+        //Month
+        if(dateValue.getMonth() < 10) {
+            retStr = retStr.concat('-0', dateValue.getMonth() + 1);
+        }
+        else {
+            retStr = retStr.concat('-', dateValue.getMonth() + 1);
+        }
+
+        //Date
+        if(dateValue.getDate() < 10) {
+            retStr = retStr.concat('-0', dateValue.getDate() + 1);
+        }
+        else {
+            retStr = retStr.concat('-', dateValue.getDate() + 1);
+        }
+
+        return retStr;
+    }
+    
+    //검색조건 엔터버튼 클릭
+    const handleSearchClick = (e) => {
+        var param = {};
+        param.FromDate = dateString(startDateRange);
+        param.ToDate = dateString(endDateRange);
+        param.Category1 = selectedOptionsStep1.value;
+        param.Category2 = selectedOptionsStep2.value;
+        param.Category3 = selectedOptionsStep3.value;
+        param.Keyword = selectKeyword;
+        param.Category_upper = '스타일';
+        param.Name = '베이직';
+        
+        // 검색조건 스토어에 저장
+        dispatch(getSearchCondition(param));
+    }
+
+    //keyword check(validate) ? setState X
+    const onSearchKey = e => {
+        // 변경 예정
+        // setKeyword(e.target.value);
+    }
 
   return (
     <>
@@ -188,7 +209,7 @@ const Start = ({ intl }) => {
                     <tr>
                       <th style={{ width:'10%' }}>Product(上) Category</th>
                       <td style={{ width:'40%' }}>
-                        <FormGroup className="select-box">
+                      <FormGroup className="select-box">
                           <Select
                             components={{ Input: CustomSelectInput }}
                             className="react-select"

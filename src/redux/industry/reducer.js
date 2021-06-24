@@ -8,7 +8,9 @@ import {
     TREND_INDUSTRY_PFACTOR_TRENDANDFACTOR,
     TREND_INDUSTRY_PFACTOR_TRENDQUAD,
     TREND_INDUSTRY_SHOWROOM,
-    TREND_INDUSTRY_TOTALCATEGORY_LIST
+    TREND_INDUSTRY_TOTALCATEGORY_LIST,
+    TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
+    TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST,
 } from '../actions';
 
 const INIT_STATE = {
@@ -48,6 +50,10 @@ export default (state = INIT_STATE, action) => {
         case TREND_INDUSTRY_SHOWROOM:
             return {...state, iShowroomData: {...action.payload}};
         case TREND_INDUSTRY_TOTALCATEGORY_LIST:
+            return {...state, iTotalcategoryListData: {...action.payload}};
+        case TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST:
+            return {...state, iTotalcategoryListData: {...action.payload}};
+        case TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST:
             return {...state, iTotalcategoryListData: {...action.payload}};
         default: 
             return state;

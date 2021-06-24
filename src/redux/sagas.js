@@ -7,13 +7,12 @@ import surveyDetailSagas from './surveyDetail/saga';
 import industrySagas from './industry/saga';
 
 export default function* rootSaga() {
-  yield all([
-    authSagas(),
-    todoSagas(),
-    chatSagas(),
-    surveyListSagas(),
-    surveyDetailSagas(),
-    industrySagas(),
-  ]);
+    yield all([
+        authSagas(),
+        todoSagas(),
+        chatSagas(),
+        surveyListSagas(),
+        surveyDetailSagas(),
+        industrySagas(),
+    ]);
 }
-
