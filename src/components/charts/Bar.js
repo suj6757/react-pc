@@ -1,67 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
 import { barChartOptions } from './config';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { getIndustryPfactorTrendandfactor, getIndustryTotalcategoryList } from '../../redux/actions';
 
 const Bar = ({height}) => {
     const dispatch = useDispatch();
-    const store = useSelector(state => state.startApp);
-    const store2 = useSelector(state => state.industryApp);
+    const store_startApp = useSelector(state => state.startApp);
+    // const store_industryApp = useSelector(state => state.industryApp);
 
-    //라인 옵션
-    const [barOption, setBarOption] = React.useState(barChartOptions);
-    //서버 호출 후 받는 임시 데이터(받을 파라미터)
-    const [resData, setResData] = React.useState({
-        SentimentFactorData: [
-            { name: '촉감', Value: '219' },
-            { name: '착탈감', Value: '103' },
-            { name: '관리', Value: '53' },
-            { name: '충전재', Value: '48' },
-            { name: '무게', Value: '42' },
-            { name: '사이즈', Value: '38' },
-            { name: '제품구성', Value: '38' },
-            { name: '무늬', Value: '37' },
-            { name: '가격', Value: '35' },
-            { name: '청결도', Value: '31' } 
-        ]
-    });
+    const [chartData, setChartData] = useState([]);
 
-    React.useEffect(() => {
-        var data = [];
-        var category = [];
-        
-        //console.log('ch : ', store);
-        resData.SentimentFactorData.map((res) => {
-            data.push(res.Value);
-            category.push(res.name);
-        });
-        
-        dispatch(getIndustryTotalcategoryList(''));
-        console.log('bbbbb : ', store2);
-        //dispatch(getIndustryPfactorTrendandfactor(store.SearchCondition));
+    const callPFactorTrendAndFactorApi = async () =>{ // eslint-disable-line no-unused-vars
+        console.log('store_startApp_api 호출... param :', store_startApp.SearchCondition);
 
-        /*
-        setBarOption({
-            series: [{
-                name : "value",
-                data : data
-            }],
-            options: {
-                ...barChartOptions.options, 
-                title: {
-                    text : ""
-                },
-                xaxis: {
-                  categories : category
-                }
+        await axios.post("/api/GetIndustry_PFactor_TrendAndFactor", store_startApp.SearchCondition)
+          .then(function (response) {
+            console.log('response.data : ', response.data);
+            
+            let chartData = response.data.SentimentFactorData;
+            
+            if(chartData.length != 0) {
+                let seriesData = [];
+                let categoriesData = [];
+
+                chartData.map((res) => {
+                    seriesData.push(res.Value);
+                    categoriesData.push(res.name);
+                });
+                 
+                 barChartOptions.series = [{
+                    name : "value",
+                    data : seriesData
+                }];
+
+                 barChartOptions.options = {
+                    ...barChartOptions.options,
+                    xaxis: {
+                    categories : categoriesData
+                    }
+                };
+
+                // api로 받아온 chartData로 Rerendering을 위해 setState
+                setChartData(chartData);
             }
+        })
+        .catch(function (error) {
+        console.log(error);
         });
-        */
-    }, [store]);
+    };
+
+    useEffect(() => {
+        if(store_startApp.SearchCondition != null) {
+            // api call, chart data binding -> Rerendering
+            callPFactorTrendAndFactorApi();
+        }
+    }, [store_startApp]);
 
     return (
-        <ReactApexChart options={barOption.options} series={barOption.series} type="bar" height={height} />
+        <ReactApexChart options={barChartOptions.options} series={barChartOptions.series} type="bar" height={height} />
     );
 };
 

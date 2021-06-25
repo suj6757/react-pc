@@ -24,7 +24,7 @@ import { ReactTableWithPaginationCard } from '../../../containers/ui/ReactTableC
 import { Colxx } from '../../../components/common/CustomBootstrap';
 import CustomSelectInput from '../../../components/common/CustomSelectInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSearchCondition, getIndustryTotalcategoryList } from '../../../redux/actions';
+import { saveSearchCondition, getIndustryTotalcategoryList } from '../../../redux/actions';
 import axios from 'axios';
 
 const Start = ({ intl }) => {
@@ -58,6 +58,9 @@ const Start = ({ intl }) => {
     const [activeFirstTab, setActiveFirstTab] = useState('1');
 
     useEffect(() => {
+        console.log('start.js 렌더완료');
+
+        // Product(上) Category
         axios.post("/api/GetIndustry_TotalCategory_List")
         .then((response) => {
             categoryList = response.data;
@@ -67,7 +70,14 @@ const Start = ({ intl }) => {
         .catch(function (error) {
             console.log(error);
         });
+
+        // 페이지 첫 로드 시 검색조건 저장 후 재렌더링
+        saveSearchDataInStore();
     }, []);
+
+    // useEffect(() => {
+
+    // }, [industryApp]);
 
     const setCategory = () => {
         let preKey = '';
@@ -114,10 +124,6 @@ const Start = ({ intl }) => {
         setSelectDataTypeStep3(categoryList2);
     }
 
-    useEffect(() => {
-      
-    }, [industryApp]);
-
     //datePicker format 수정
     const dateString = (dateValue) => {
         let retStr = '';
@@ -135,29 +141,42 @@ const Start = ({ intl }) => {
 
         //Date
         if(dateValue.getDate() < 10) {
-            retStr = retStr.concat('-0', dateValue.getDate() + 1);
+            retStr = retStr.concat('-0', dateValue.getDate());
         }
         else {
-            retStr = retStr.concat('-', dateValue.getDate() + 1);
+            retStr = retStr.concat('-', dateValue.getDate());
         }
 
         return retStr;
     }
-    
-    //검색조건 엔터버튼 클릭
+
+    // 검색조건 엔터버튼 클릭
     const handleSearchClick = (e) => {
+      saveSearchDataInStore();
+    }
+    
+    const saveSearchDataInStore = () => {
         var param = {};
-        param.FromDate = dateString(startDateRange);
-        param.ToDate = dateString(endDateRange);
-        param.Category1 = selectedOptionsStep1.value;
-        param.Category2 = selectedOptionsStep2.value;
-        param.Category3 = selectedOptionsStep3.value;
-        param.Keyword = selectKeyword;
+        // 실제 인풋 검색조건
+        // param.FromDate = dateString(startDateRange);
+        // param.ToDate = dateString(endDateRange);
+        // param.Category1 = selectedOptionsStep1.value;
+        // param.Category2 = selectedOptionsStep2.value;
+        // param.Category3 = selectedOptionsStep3.value;
+        // param.Keyword = selectKeyword;
+        
+        // (데이터 나오는) 테스트용 검색조건
+        param.FromDate = '2021-05-01';
+        param.ToDate = '2021-05-30';
+        param.Category1 = '패션의류';
+        param.Category2 = '여성의류';
+        param.Category3 = '티셔츠';
+        param.Keyword = '';
         param.Category_upper = '스타일';
         param.Name = '베이직';
         
-        // 검색조건 스토어에 저장
-        dispatch(getSearchCondition(param));
+        // 검색조건 스토어에 저장 후 재렌더링
+        dispatch(saveSearchCondition(param));
     }
 
     //keyword check(validate) ? setState X
