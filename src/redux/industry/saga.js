@@ -11,8 +11,8 @@ import {
   TREND_INDUSTRY_PFACTOR_TRENDQUAD,
   TREND_INDUSTRY_SHOWROOM,
   TREND_INDUSTRY_TOTALCATEGORY_LIST,
-  TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
-  TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST,
+  TREND_INDUSTRY_TOTALCATEGORY_LIST_SUCCESS,
+  TREND_INDUSTRY_TOTALCATEGORY_LIST_ERROR,
 } from '../actions';
 
 import {
@@ -26,8 +26,8 @@ import {
   getIndustryPfactorTrendquad,
   getIndustryShowroom,
   getIndustryTotalcategoryList,
-  getSuccessIndustryTotalcategoryList,
-  getErrorIndustryTotalcategoryList,
+  getIndustryTotalcategoryListSuccess,
+  getIndustryTotalcategoryListError,
 } from './actions';
 
 function* industryEfactorGi({ payload }){
@@ -128,10 +128,10 @@ const industryTotalcategoryListAsync = async() => {
 function* industryTotalcategoryList({ payload }) {
     try {
         const result = yield call(industryTotalcategoryListAsync);
-        yield put(getSuccessIndustryTotalcategoryList(result));
+        yield put(getIndustryTotalcategoryListSuccess(result));
     }
     catch(error) {
-        yield put(getErrorIndustryTotalcategoryList());
+        yield put(getIndustryTotalcategoryListError());
     }
 }
 export function* watchIndustryTotalcategoryList() {

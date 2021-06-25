@@ -9,8 +9,8 @@ import {
     TREND_INDUSTRY_PFACTOR_TRENDQUAD,
     TREND_INDUSTRY_SHOWROOM,
     TREND_INDUSTRY_TOTALCATEGORY_LIST,
-    TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
-    TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST
+    TREND_INDUSTRY_TOTALCATEGORY_LIST_SUCCESS,
+    TREND_INDUSTRY_TOTALCATEGORY_LIST_ERROR
 } from '../actions';
 
 export const getIndustryEfactorGi = () => ({
@@ -55,10 +55,10 @@ export const getIndustryShowroom = () => ({
 export const getIndustryTotalcategoryList = () => ({
     type: TREND_INDUSTRY_TOTALCATEGORY_LIST
 });
-export const getSuccessIndustryTotalcategoryList = (param) => ({
-    type: TREND_SUCCESS_INDUSTRY_TOTALCATEGORY_LIST,
+export const getIndustryTotalcategoryListSuccess = (param) => ({
+    type: TREND_INDUSTRY_TOTALCATEGORY_LIST_SUCCESS,
     payload: param
 });
-export const getErrorIndustryTotalcategoryList = () => ({
-    type: TREND_ERROR_INDUSTRY_TOTALCATEGORY_LIST
+export const getIndustryTotalcategoryListError = () => ({
+    type: TREND_INDUSTRY_TOTALCATEGORY_LIST_ERROR
 });
