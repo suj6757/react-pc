@@ -187,9 +187,11 @@ export const scatterDatetimeChartOptions = {
         },
         y: {
           formatter: function(value, { seriesIndex, w }) {
-            console.log(w);
             return w.config.series[seriesIndex].data[0][0] + ', ' + value
           }
+        },
+        marker: {
+          show: true
         }
         // custom: function({series, seriesIndex, dataPointIndex, w}) {
         //   return '<div class="arrow_box">' +
