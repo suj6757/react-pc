@@ -5,12 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 const ScatterDatetime = ({height}) => {
-    //라인 옵션
-    // const [ScatterDatetimeOption, setScatterDatetimeOption] = React.useState(scatterDatetimeChartOptions);
-    
     const dispatch = useDispatch();
     const store_startApp = useSelector(state => state.startApp);
-    // const store_industryApp = useSelector(state => state.industryApp);
+    
     const [chartData, setChartData] = useState([]);
     
     //서버 호출 후 받는 데이터
@@ -140,61 +137,6 @@ const ScatterDatetime = ({height}) => {
         console.log(error);
         });
     };
-
-    // useEffect(() => {
-    //     var seriesData = [];
-    //     resData.Data.map((res) => {
-    //         seriesData.push({
-    //             name: res.Category_upper,
-    //             data: [[res.P_R_INDEX, res.RISE_FALL]], 
-    //         });
-    //     });
-
-    //     setScatterDatetimeOption({
-    //         series: seriesData,
-    //         options: {
-    //             chart: {
-    //                 height: 350,
-    //                 type: 'scatter',
-    //                 zoom: {
-    //                     type: 'xy'
-    //                 }
-    //             },
-    //             dataLabels: {
-    //                 enabled: true,
-    //                 formatter: function(value, { seriesIndex, dataPointIndex, w }) {
-    //                     return w.config.series[seriesIndex].name
-    //                 },
-    //                 offsetX: 0,
-    //                 offsetY: -8
-    //             },
-    //             grid: {
-    //                 xaxis: {
-    //                     lines: {
-    //                         show: true
-    //                     }
-    //                 },
-    //                 yaxis: {
-    //                     lines: {
-    //                         show: true
-    //                     }
-    //                 },
-    //             },
-    //             xaxis: {
-    //                 min: 0.9,
-    //                 max: 5.1, //x축은 소수점이 안먹힘
-    //                 type: 'category',
-    //                 tickAmount: 2
-    //             },
-    //             yaxis: {
-    //                 min: 0.9,
-    //                 max: 2.1,
-    //                 tickAmount: 2,
-    //                 show: false
-    //             }
-    //         }
-    //     });
-    //   }, []);
       
     useEffect(() => {
         if(store_startApp.SearchCondition != null) {

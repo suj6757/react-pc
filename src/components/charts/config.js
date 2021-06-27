@@ -131,7 +131,6 @@ export const scatterDatetimeChartOptions = {
       dataLabels: {
           enabled: true,
           formatter: function(value, { seriesIndex, dataPointIndex, w }) {
-              console.log(value + "AND" + seriesIndex + "AND" + w);
               return w.config.series[seriesIndex].name
           },
           offsetX: 0,
