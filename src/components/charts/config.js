@@ -41,33 +41,33 @@ export const bubbleChartOptions = {
 // line config options 설정
 export const lineChartOptions = {
   options: {
-    chart: {
-      type: 'line',
-      height: 350,
-      toolbar: {
-        show: false,
+      chart: {
+          type: 'line',
+          height: 350,
+          toolbar: {
+              show: false,
+          },
+          zoom: {
+              enabled: false
+          }
       },
-      zoom: {
-        enabled: false
-      }
-    },
-    dataLabels: {
-      enabled: true
-    },
-    fill: {
-      opacity: 0.7
-    },
-    title: {
-      // text: ""
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    },
+      dataLabels: {
+          enabled: true
+      },
+      fill: {
+          opacity: 0.7
+      },
+      title: {
+          // text: ""
+      },
+      xaxis: {
+          categories: []
+      },
   },
-  series: [{
-    name: "Desktops",
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-  }]
+    series: [{
+        name: "Desktops",
+        data: []
+    }]
 };
 
 // bar config options 설정

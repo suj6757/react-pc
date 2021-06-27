@@ -12,13 +12,9 @@ const Bar = ({height}) => {
 
     const [chartData, setChartData] = useState([]);
 
-    const callPFactorTrendAndFactorApi = async () =>{ // eslint-disable-line no-unused-vars
-        console.log('store_startApp_api 호출... param :', store_startApp.SearchCondition);
-
+    const callPFactorTrendAndFactorApi = async () => {
         await axios.post("/api/GetIndustry_PFactor_TrendAndFactor", store_startApp.SearchCondition)
-          .then(function (response) {
-            console.log('response.data : ', response.data);
-            
+        .then(function (response) {
             let chartData = response.data.SentimentFactorData;
             
             if(chartData.length != 0) {
@@ -29,16 +25,37 @@ const Bar = ({height}) => {
                     seriesData.push(res.Value);
                     categoriesData.push(res.name);
                 });
-                 
-                 barChartOptions.series = [{
+                    
+                barChartOptions.series = [{
                     name : "value",
                     data : seriesData
                 }];
 
-                 barChartOptions.options = {
+                barChartOptions.options = {
                     ...barChartOptions.options,
-                    xaxis: {
-                    categories : categoriesData
+                    xaxis : {
+                        categories : categoriesData
+                    },
+                    grid : {
+                        yaxis : {
+                            lines : {
+                                show : false
+                            }
+                        }
+                    },
+                    chart : {
+                        events : {
+                            click : function(event, chartContext, config) {
+                                var value = config.dataPointIndex;
+
+                                if(value >= 0) {
+                                    console.log('click value : ', chartContext.bar.series[0][value]);
+                                }
+                                else {
+                                    alert('차트를 클릭하세요');
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -47,7 +64,7 @@ const Bar = ({height}) => {
             }
         })
         .catch(function (error) {
-        console.log(error);
+            console.log(error);
         });
     };
 

@@ -109,11 +109,8 @@ const ScatterDatetime = ({height}) => {
 
     const callPFactorTrendAndFactorApi = async () =>{ // eslint-disable-line no-unused-vars
         await axios.post("/api/GetIndustry_PFactor_TrendQuad", store_startApp.SearchCondition)
-          .then(function (response) {
-            console.log('response.data : ', response.data);
-            
+        .then(function (response) {            
             let chartData = response.data.Data;
-            console.log('Data : ', response.data.Data);
             
             if(chartData.length != 0) {
                 let seriesALL = [];
@@ -125,8 +122,6 @@ const ScatterDatetime = ({height}) => {
                     });
                 });
 
-                console.log(seriesALL);
-
                 scatterDatetimeChartOptions.series = seriesALL;
 
                 // api로 받아온 chartData로 Rerendering을 위해 setState
@@ -134,7 +129,7 @@ const ScatterDatetime = ({height}) => {
             }
         })
         .catch(function (error) {
-        console.log(error);
+            console.log(error);
         });
     };
       
