@@ -138,7 +138,7 @@ export const scatterDatetimeChartOptions = {
           style: {
             fontSize: '15px',
             fontWeight: 400/500,
-            colors: ['#868686'] // label만 회색
+            //colors: ['#868686'] // label만 회색
             //colors: ['#009bf8'] // label만 파란색
           }
       },
@@ -175,7 +175,7 @@ export const scatterDatetimeChartOptions = {
       legend: {
         show: false
       },
-      colors: ['#20a8fa'] // marker&label 파란색
-      //colors: ['#868686'] // marker&label 회색
+      //colors: ['#20a8fa'] // marker&label 파란색
+      colors: ['#868686'] // marker&label 회색
   }
 };
