@@ -172,10 +172,30 @@ export const scatterDatetimeChartOptions = {
           // forceNiceScale: true
           // show: false
       },
-      legend: {
+      legend: { // 범례
         show: false
       },
       //colors: ['#20a8fa'] // marker&label 파란색
-      colors: ['#868686'] // marker&label 회색
+      colors: ['#868686'], // marker&label 회색
+      tooltip: {
+        x: {
+          show: false
+          // show: true,
+          // formatter: function(value, { series, seriesIndex, w }) {
+          //   return w.config.series[seriesIndex].name
+          // }
+        },
+        y: {
+          formatter: function(value, { seriesIndex, w }) {
+            console.log(w);
+            return w.config.series[seriesIndex].data[0][0] + ', ' + value
+          }
+        }
+        // custom: function({series, seriesIndex, dataPointIndex, w}) {
+        //   return '<div class="arrow_box">' +
+        //     '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+        //     '</div>'
+        // }
+      }
   }
 };
