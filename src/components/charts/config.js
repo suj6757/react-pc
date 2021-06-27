@@ -63,6 +63,9 @@ export const lineChartOptions = {
       xaxis: {
           categories: []
       },
+      yaxis: {
+        decimalsInFloat: 1
+      }
   },
     series: [{
         name: "Desktops",
