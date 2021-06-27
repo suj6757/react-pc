@@ -168,6 +168,7 @@ export const scatterDatetimeChartOptions = {
       yaxis: {
           min: 1,
           max: 2,
+          decimalsInFloat: 1, // 소수점 1자리까지 표시
           tickAmount: 2
           // forceNiceScale: true
           // show: false
@@ -187,6 +188,7 @@ export const scatterDatetimeChartOptions = {
         },
         y: {
           formatter: function(value, { seriesIndex, w }) {
+            console.log(w);
             return w.config.series[seriesIndex].data[0][0] + ', ' + value
           }
         },
